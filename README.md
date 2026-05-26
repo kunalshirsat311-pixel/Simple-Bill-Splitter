@@ -1,64 +1,79 @@
-# Simple-Bill-Splitter
-Python | Expense Splitter | Interactive terminal app to enter any expenses, track a running total, and calculate how much each person should pay. 
+num_of_friends = int(input("How many people are splitting the bill? "))
 
-# Simple Bill Splitter (CLI)
+running_total = 0.0
 
-A beginner-friendly Python command-line app to split any kind of shared expenses between friends.
+while True:
+    category = input("Enter expense category (or 'done' to finish): ")
 
-Instead of hard-coded categories like "food" or "drinks", this tool lets you enter any expense name (travel, fuel, tickets, shopping, etc.), adds everything up, and then divides the total equally among the group.
+    if category.lower() == "done":
+        break
 
-## Features
+    amount = float(input(f"Amount for {category}: "))
+    running_total += amount
+    print("Current total:", running_total)
 
-- Ask how many people are splitting the bill.
-- Add any number of expenses with custom category names.
-- See the running total after each expense.
-- Handle simple invalid input (non-numeric amounts, zero or negative people).
-- Show a short summary: total bill and amount per person (rounded to 2 decimal places).
+    if num_of_friends > 0:
+    per_person = running_total / num_of_friends
+    per_person = round(per_person, 2)
+    print("Total bill:", running_total)
+    print("Bill per person:", per_person)
+else:
+    print("Number of friends must be greater than 0.")
 
-## How to Run
+    # main.py
+# Simple, open-ended bill splitter
 
-1. Make sure you have Python 3 installed.
-2. Clone this repository:
-   ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   ```
-3. Change into the project folder:
-   ```bash
-   cd your-repo-name
-   ```
-4. Run the script:
-   ```bash
-   python main.py
-   ```
-   or on some systems:
-   ```bash
-   python3 main.py
-   ```
+def main():
+    print("Welcome to the Bill Splitter!")
 
-## How It Works
+    # Get number of friends
+    while True:
+        try:
+            num_of_friends = int(input("How many people are splitting the bill? "))
+            if num_of_friends <= 0:
+                print("Please enter a number greater than 0.")
+            else:
+                break
+        except ValueError:
+            print("Please enter a valid whole number.")
 
-- The program asks for the number of people.
-- Then it repeatedly:
-  - asks for an expense category (for example: `travel`, `fuel`, `food`),
-  - asks for the amount,
-  - adds the amount to a running total.
-- When you type `done` as the category, the app stops asking for new expenses.
-- Finally, it divides the total by the number of people and prints how much each person should pay, rounded to 2 decimal places.
+    running_total = 0.0
+    expense_count = 0
 
-## Example Flow
+    # Collect expenses
+    while True:
+        category = input("Enter expense category (or 'done' to finish): ")
 
-- Number of people: 3  
-- Expenses:
-  - travel: 1500
-  - food: 600
-  - fuel: 300  
+        if category.lower() == "done":
+            break
 
-Total = 2400 → each person pays 800.00.
+        try:
+            amount = float(input(f"Amount for {category}: "))
+            if amount < 0:
+                print("Amount cannot be negative. Try again.")
+                continue
+        except ValueError:
+            print("Please enter a valid number for the amount.")
+            continue
 
-## Possible Future Improvements
+        running_total += amount
+        expense_count += 1
+        print(f"Added {category}: {amount}")
+        print(f"Current total: {running_total}\n")
 
-- Let each person have a name and track who paid what.
-- Allow different split types (for example: one person pays a fixed amount, others split the rest).
-- Export the result to a text file or JSON.
+    if expense_count == 0:
+        print("No expenses were added. Nothing to split.")
+        return
 
-This project is mainly for learning purposes and to show basic understanding of Python input, loops, and simple calculations.
+    # Split and round
+    per_person = running_total / num_of_friends
+    per_person = round(per_person, 2)
+
+    print("\n--- Summary ---")
+    print(f"Number of people: {num_of_friends}")
+    print(f"Number of expenses: {expense_count}")
+    print(f"Total bill: {running_total}")
+    print(f"Bill per person: {per_person}")
+
+if __name__ == "__main__":
+    main()
